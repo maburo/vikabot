@@ -1,0 +1,25 @@
+{
+  "states": [
+    {
+      "id": "start",
+      "keyword": "regex:\/*start",
+      "action": {
+        "text": "Привет",
+        "buttons": [
+          "Найти компаньена", "Выбрать сообытие"
+        ]
+      }
+    },
+    {
+      "id": "companion",
+      "keyword": "Найти компаньена"
+    },
+    {
+      "id": "event",
+      "keyword": "Выбрать сообытие",
+      "action": {
+
+      }
+    }
+  ]
+}
