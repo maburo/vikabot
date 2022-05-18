@@ -84,9 +84,9 @@ val defaultMessages = listOf(
     "Что что?", "Я не понимаю", "А?", "Хм, попробуй еще раз",
 )
 
-suspend fun sendDefaultMessage(chatId: String): String {
+suspend fun sendDefaultMessage(ctx: Context): String {
     sendMessage(OutTextMessage(
-        chat_id = chatId,
+        chat_id = ctx.chatId,
         text = defaultMessages[defaultMsgIdx]
     ))
 
@@ -94,6 +94,8 @@ suspend fun sendDefaultMessage(chatId: String): String {
     if (defaultMsgIdx >= defaultMessages.size) {
         defaultMsgIdx = 0
     }
+
+    ctx.user.prevState?.let { it.action(ctx) }
 
     return ""
 }
@@ -105,9 +107,11 @@ fun Application.configureRouting() {
         }
         get("/stop") {
             isRunning = false
+            call.respondText { "stopped" }
         }
         get("/start") {
             isRunning = true
+            call.respondText { "started" }
         }
         static("assets") {
             staticBasePackage = "assets"
@@ -139,6 +143,7 @@ fun Application.configureRouting() {
                 while (nextStateName?.isNotEmpty() == true) {
                     val nextState = states[nextStateName]!!
                     nextStateName = nextState.action(botctx)
+                    user.prevState = user.currentState
                     user.currentState = nextState
                 }
             } catch (e: Exception) {

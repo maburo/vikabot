@@ -97,5 +97,6 @@ data class User(
     val firstName: String? = null,
     var testResult: String = "",
     var event: Int = -1,
-    var currentState: State = states["start"]!!
+    var currentState: State = states["start"]!!,
+    var prevState: State? = null
 )

@@ -29,7 +29,7 @@ val states = mapOf(
                     true -> "test-block-1"
                     else -> "event"
                 }
-                else -> sendDefaultMessage(ctx.chatId)
+                else -> sendDefaultMessage(ctx)
             }
         }
     ),
@@ -41,7 +41,7 @@ val states = mapOf(
             ))
             null
         },
-        nextState = { action, ctx ->
+        nextState = { _, _ ->
             "start"
         }
     ),
@@ -74,7 +74,7 @@ val states = mapOf(
                     ctx.user.testResult += "N"
                     "test-block-2"
                 }
-                else -> sendDefaultMessage(ctx.chatId)
+                else -> sendDefaultMessage(ctx)
             }
         }
     ),
@@ -102,7 +102,7 @@ val states = mapOf(
                     ctx.user.testResult += "N"
                     "event"
                 }
-                else -> sendDefaultMessage(ctx.chatId)
+                else -> sendDefaultMessage(ctx)
             }
         }
     ),
@@ -125,7 +125,7 @@ val states = mapOf(
                 "Классное! \uD83D\uDC4D" -> "good-event"
                 "Отвратительное \uD83D\uDCA9" -> "bad-event"
                 "Рискну! \uD83E\uDDD0" -> "random-event"
-                else -> sendDefaultMessage(ctx.chatId)
+                else -> sendDefaultMessage(ctx)
             }
         }
     ),
@@ -147,7 +147,7 @@ val states = mapOf(
 
             "restart"
         },
-        nextState = { action, ctx ->
+        nextState = { _, _ ->
             "restart"
         }
     ),
@@ -169,7 +169,7 @@ val states = mapOf(
 
             "restart"
         },
-        nextState = { action, ctx ->
+        nextState = { _, _ ->
             "restart"
         }
     ),
@@ -193,7 +193,7 @@ val states = mapOf(
 
             "restart"
         },
-        nextState = { action, ctx ->
+        nextState = { _, _ ->
             "restart"
         }
     ),
@@ -219,7 +219,7 @@ val states = mapOf(
                     ctx.user.testResult = ""
                     "test-block-1"
                 }
-                else -> sendDefaultMessage(ctx.chatId)
+                else -> sendDefaultMessage(ctx)
             }
         }
     )
