@@ -27,4 +27,4 @@ FROM openjdk:16-jdk-slim
 EXPOSE 8080
 RUN mkdir /home/app
 COPY --from=build /home/gradle/src/build/libs/vikabot-1.0-SNAPSHOT.jar /app/vikabot.jar
-ENTRYPOINT ["java", "-jar", "vikabot.jar"]
+ENTRYPOINT ["java", "-jar", "/app/vikabot.jar"]
