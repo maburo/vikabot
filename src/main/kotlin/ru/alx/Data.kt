@@ -8,6 +8,7 @@ data class From(
 )
 
 data class Message(
+    val message_id: String,
     val from: From?,
     val chat: Chat?,
     val text: String?,

@@ -23,6 +23,7 @@ val port = System.getenv("PORT")?.toInt() ?: 8080
 val TOKEN: String? = System.getenv("TOKEN")
 val TELEGRAM_URL = System.getenv("TELEGRAM_URL") ?: "https://api.telegram.org/bot$TOKEN"
 val BASE_URL = System.getenv("APP_URL") ?: "https://d298-178-66-158-184.eu.ngrok.io"
+var isRunning = true
 //val JDBC = System.getenv("JDBC_DATABASE_URL")
 //JDBC_DATABASE_USERNAME
 
@@ -44,7 +45,7 @@ suspend fun main() {
 
     if (TOKEN == null) {
         System.err.println("TOKEN is empty!")
-        exitProcess(-1)
+//        exitProcess(-1)
     }
 
     setWebhook()
@@ -102,12 +103,19 @@ fun Application.configureRouting() {
         get("/") {
             call.respondText { "Hello world" }
         }
+        get("/stop") {
+            isRunning = false
+        }
+        get("/start") {
+            isRunning = true
+        }
         static("assets") {
             staticBasePackage = "assets"
             resources(".")
         }
         post("/") {
             try {
+                if (!isRunning) return@post
 //                val text = call.receiveText()
 //                println(text)
 //                val mapper = ObjectMapper().registerModule(KotlinModule()).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)

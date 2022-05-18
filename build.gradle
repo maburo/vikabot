@@ -14,10 +14,8 @@ repositories {
 dependencies {
     implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktor_version")
     implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
-//    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
     implementation("io.ktor:ktor-serialization-jackson-jvm:$ktor_version")
     implementation("io.ktor:ktor-serialization-jackson:$ktor_version")
-//    implementation("io.ktor:ktor-jackson:$ktor_version")
     implementation 'io.ktor:ktor-jackson:1.6.8'
     implementation("io.ktor:ktor-server-core-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
@@ -28,11 +26,6 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 }
-
-//application {
-//    mainClass.set("ru.alx.MainKt")
-//}
-
 java {
     sourceCompatibility = JavaVersion.toVersion("11")
 }
