@@ -15,7 +15,6 @@ RUN mkdir /app
 
 COPY --from=build /home/gradle/src/build/install /app
 ENTRYPOINT ["/app/vikabot/bin/vikabot"]
-# ENTRYPOINT ["java", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app/spring-boot-application.jar"]
 
 # COPY --from=build /app/build/install/vikabot /app
 # ENTRYPOINT ["/app/bin/vikabot"]
