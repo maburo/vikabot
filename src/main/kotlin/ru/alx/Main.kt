@@ -44,7 +44,7 @@ suspend fun main() {
 
     if (TOKEN == null) {
         System.err.println("TOKEN is empty!")
-//        exitProcess(-1)
+        exitProcess(-1)
     }
 
     setWebhook()

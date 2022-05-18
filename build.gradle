@@ -1,8 +1,6 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.6.21'
-//    id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'application'
-//    id 'java'
 }
 
 group 'org.example'
@@ -31,12 +29,25 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
 }
 
-application {
-    mainClass.set("ru.alx.MainKt")
-}
+//application {
+//    mainClass.set("ru.alx.MainKt")
+//}
 
 java {
     sourceCompatibility = JavaVersion.toVersion("11")
+}
+
+jar {
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+
+    manifest {
+        attributes(
+                'Main-Class': 'ru.alx.MainKt'
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 task stage {
