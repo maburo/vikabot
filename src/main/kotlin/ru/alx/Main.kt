@@ -19,10 +19,11 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlin.system.exitProcess
 
+val HOOK_PATH = "telegram/hook"
 val port = System.getenv("PORT")?.toInt() ?: 8080
 val TOKEN: String? = System.getenv("TOKEN")
 val TELEGRAM_URL = System.getenv("TELEGRAM_URL") ?: "https://api.telegram.org/bot$TOKEN"
-val BASE_URL = System.getenv("APP_URL") ?: "https://d298-178-66-158-184.eu.ngrok.io"
+val BASE_URL: String? = System.getenv("APP_URL")
 var isRunning = true
 
 val client = HttpClient(CIO) {
@@ -42,6 +43,13 @@ suspend fun main() {
         System.err.println("TOKEN is empty!")
         exitProcess(-1)
     }
+
+    if (BASE_URL == null) {
+        System.err.println("BASE_URL is empty!")
+        exitProcess(-1)
+    }
+
+    println(BASE_URL)
 
     setWebhook()
 //    get("getWebhookInfo")
@@ -65,7 +73,7 @@ suspend fun get(method:String) {
 suspend fun setWebhook() {
     val response = client.post("$TELEGRAM_URL/setWebhook") {
         contentType(ContentType.Application.Json)
-        setBody(mapOf("url" to BASE_URL))
+        setBody(mapOf("url" to "$BASE_URL/$HOOK_PATH"))
     }
 
     println("Set hook: ${response.status} ${response.bodyAsText()}")
@@ -84,12 +92,14 @@ suspend fun sendDefaultMessage(ctx: Context): String {
         text = defaultMessages[defaultMsgIdx]
     ))
 
+    println("state: ${ctx.user.currentState.name}")
+
     defaultMsgIdx += 1
     if (defaultMsgIdx >= defaultMessages.size) {
         defaultMsgIdx = 0
     }
 
-    ctx.user.prevState?.let { it.action(ctx) }
+    ctx.user.currentState.let { it.action(ctx) }
 
     return ""
 }
@@ -111,7 +121,7 @@ fun Application.configureRouting() {
             staticBasePackage = "assets"
             resources(".")
         }
-        post("/") {
+        post("/$HOOK_PATH") {
             try {
                 if (!isRunning) return@post
 //                val text = call.receiveText()
@@ -136,6 +146,9 @@ fun Application.configureRouting() {
 
                 while (nextStateName?.isNotEmpty() == true) {
                     val nextState = states.find { it.name == nextStateName }!!
+
+                    println("${user.username} ${user.currentState.name} >> ${nextState.name}")
+
                     nextStateName = nextState.action(botctx)
                     user.prevState = user.currentState
                     user.currentState = nextState
@@ -157,6 +170,12 @@ suspend fun sendPhoto(message: OutPhotoMessage) {
     val response = client.post("$TELEGRAM_URL/sendPhoto") {
         contentType(ContentType.Application.Json)
         setBody(message)
+    }
+
+    if (!response.status.isSuccess()) {
+        println("Error: ${response.bodyAsText()}")
+        println(message)
+        return
     }
 
     response.body<Message>().photo?.last()?.let {
