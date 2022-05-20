@@ -19,7 +19,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlin.system.exitProcess
 
-val HOOK_PATH = "telegram/hook"
+const val HOOK_PATH = "telegram/hook"
 val port = System.getenv("PORT")?.toInt() ?: 8080
 val TOKEN: String? = System.getenv("TOKEN")
 val TELEGRAM_URL = System.getenv("TELEGRAM_URL") ?: "https://api.telegram.org/bot$TOKEN"
@@ -50,6 +50,7 @@ suspend fun main() {
     }
 
     println(BASE_URL)
+    println("$BASE_URL/$HOOK_PATH")
 
     setWebhook()
 //    get("getWebhookInfo")

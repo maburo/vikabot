@@ -1,7 +1,7 @@
 package ru.alx
 
-val TEST_YES_BTN = "Это мне близко и понятно"
-val TEST_NO_BTN = "Это мне не нравится"
+const val TEST_YES_BTN = "Это мне близко и понятно"
+const val TEST_NO_BTN = "Это мне не нравится"
 val TEST_KEYS = Keyboard(listOf(listOf(
     KeyboardButton(TEST_YES_BTN),
     KeyboardButton(TEST_NO_BTN),
