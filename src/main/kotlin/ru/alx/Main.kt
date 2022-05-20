@@ -24,8 +24,6 @@ val TOKEN: String? = System.getenv("TOKEN")
 val TELEGRAM_URL = System.getenv("TELEGRAM_URL") ?: "https://api.telegram.org/bot$TOKEN"
 val BASE_URL = System.getenv("APP_URL") ?: "https://d298-178-66-158-184.eu.ngrok.io"
 var isRunning = true
-//val JDBC = System.getenv("JDBC_DATABASE_URL")
-//JDBC_DATABASE_USERNAME
 
 val client = HttpClient(CIO) {
     install(ContentNegotiation) {
@@ -40,17 +38,13 @@ val client = HttpClient(CIO) {
 suspend fun main() {
 //    get("deleteWebhook")
 
-//    val response = client.get("$TELEGRAM_URL/getUpdates")
-//    println(response.body() as String)
-
     if (TOKEN == null) {
         System.err.println("TOKEN is empty!")
-//        exitProcess(-1)
+        exitProcess(-1)
     }
 
     setWebhook()
-
-    get("getWebhookInfo")
+//    get("getWebhookInfo")
 
     embeddedServer(Netty, port = port, host = "0.0.0.0") {
         install(io.ktor.server.plugins.contentnegotiation.ContentNegotiation) {
@@ -141,7 +135,7 @@ fun Application.configureRouting() {
                 var nextStateName: String? = user.currentState.nextState(action, botctx)
 
                 while (nextStateName?.isNotEmpty() == true) {
-                    val nextState = states[nextStateName]!!
+                    val nextState = states.find { it.name == nextStateName }!!
                     nextStateName = nextState.action(botctx)
                     user.prevState = user.currentState
                     user.currentState = nextState

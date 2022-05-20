@@ -1,11 +1,13 @@
 package ru.alx
 
-val states = mapOf(
-    "start" to State(
+val states = listOf(
+    State(
+        name = "start",
         action = { null },
         nextState = { _, _ -> "welcome" }
     ),
-    "welcome" to State(
+    State(
+        name = "welcome",
         action = { ctx: Context ->
             ctx.user.event = -1
             ctx.user.testResult = ""
@@ -33,7 +35,8 @@ val states = mapOf(
             }
         }
     ),
-    "companion" to State(
+    State(
+        name = "companion",
         action = { ctx ->
             sendMessage(OutTextMessage(
                 text = "companion",
@@ -45,7 +48,8 @@ val states = mapOf(
             "start"
         }
     ),
-    "test-block-1" to State(
+    State(
+        name = "test-block-1",
         action = { ctx ->
             sendMessage(OutTextMessage(
                 text = "Вам необходимо пройти тест",
@@ -78,7 +82,8 @@ val states = mapOf(
             }
         }
     ),
-    "test-block-2" to State(
+    State(
+        name = "test-block-2",
         action = { ctx ->
             sendPhoto(OutPhotoMessage(
                 chat_id = ctx.chatId,
@@ -106,7 +111,8 @@ val states = mapOf(
             }
         }
     ),
-    "event" to State(
+    State(
+        name = "event",
         action = { ctx ->
             sendMessage(OutTextMessage(
                 text = "Какое событие подобрать",
@@ -129,7 +135,8 @@ val states = mapOf(
             }
         }
     ),
-    "good-event" to State(
+    State(
+        name = "good-event",
         action = { ctx ->
             sendMessage(OutTextMessage(
                 chat_id = ctx.chatId,
@@ -151,7 +158,8 @@ val states = mapOf(
             "restart"
         }
     ),
-    "bad-event" to State(
+    State(
+        name = "bad-event",
         action = { ctx ->
             sendMessage(OutTextMessage(
                 chat_id = ctx.chatId,
@@ -173,7 +181,8 @@ val states = mapOf(
             "restart"
         }
     ),
-    "random-event" to State(
+    State(
+        name = "random-event",
         action = { ctx ->
             sendDice(ctx.chatId)
 
@@ -197,7 +206,8 @@ val states = mapOf(
             "restart"
         }
     ),
-    "restart" to State(
+    State(
+        name = "restart",
         action = { ctx ->
             sendMessage(OutTextMessage(
                 chat_id = ctx.chatId,
